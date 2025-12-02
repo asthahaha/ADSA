@@ -1,0 +1,350 @@
+1.   Fibonacci Number (using recusion)
+class Solution {
+    public int fib(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        return fib(n - 1) + fib(n - 2);
+    }
+}
+
+
+2.   Sum of digits of number
+class Solution {
+    public int addDigits(int num) {
+        while (num >= 10) {
+            int sum = 0;
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+            num = sum;
+        }
+        return num;
+    }
+}
+
+
+3.  Check palindrome
+class Solution {
+    public boolean isPalindrome(String s) {
+        if (s == null) return false;
+
+        int left = 0, right = s.length() - 1;
+
+        while (left < right) {
+           
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+
+            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+
+
+4.  Reverse string
+class Solution {
+    public void reverseString(char[] s) {
+        int left = 0, right = s.length - 1;
+        
+        while (left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            
+            left++;
+            right--;
+        }
+    }
+}
+
+
+5.  Valid paranthesis
+class Solution {
+    public boolean isPalindrome(String s) {
+        if (s == null) return false;
+
+        int left = 0, right = s.length() - 1;
+
+        while (left < right) {
+           
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+
+            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+
+
+6.  Reverse string
+class Solution {
+    public void reverseString(char[] s) {
+        int left = 0, right = s.length - 1;
+        
+        while (left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            
+            left++;
+            right--;
+        }
+    }
+}
+
+
+7.  Generate paranthesis
+public class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        backtrack(result, "", 0, 0, n);
+        return result;
+    }
+
+    private void backtrack(List<String> result, String current, int open, int close, int n) {
+        if (current.length() == 2 * n) {
+            result.add(current);
+            return;
+        }
+
+        if (open < n) {
+            backtrack(result, current + "(", open + 1, close, n);
+        }
+
+        if (close < open) {
+            backtrack(result, current + ")", open, close + 1, n);
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.generateParenthesis(3));
+    }
+}
+
+
+8.  Reverse linkedlist
+public class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode next = curr.next; 
+            curr.next = prev;          
+            prev = curr;              
+            curr = next;               
+        }
+
+        return prev; 
+    }
+}
+
+
+9.  Generate binary string without adjacent zeroes
+class Solution {
+    List<String> result = new ArrayList<>();
+    
+    public List<String> validStrings(int n) {
+        backtrack(n, new StringBuilder(), 'X'); 
+        return result;
+    }
+
+    private void backtrack(int n, StringBuilder sb, char prev) {
+        if (sb.length() == n) {
+            result.add(sb.toString());
+            return;
+        }
+
+        sb.append('1');
+        backtrack(n, sb, '1');
+        sb.deleteCharAt(sb.length() - 1);
+
+        if (prev != '0') {
+            sb.append('0');
+            backtrack(n, sb, '0');
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
+
+
+10.  Letter combination of phone number
+import java.util.*;
+
+class Solution {
+    private static final String[] KEYPAD = {
+        "",     
+        "",     
+        "abc",  
+        "def",  
+        "ghi",  
+        "jkl",  
+        "mno",  
+        "pqrs", 
+        "tuv",  
+        "wxyz"  
+    };
+    
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.length() == 0) return result;
+        backtrack(digits, 0, new StringBuilder(), result);
+        return result;
+    }
+    
+    private void backtrack(String digits, int index, StringBuilder sb, List<String> result) {
+        if (index == digits.length()) {
+            result.add(sb.toString());
+            return;
+        }
+        
+        String letters = KEYPAD[digits.charAt(index) - '0'];
+        for (char c : letters.toCharArray()) {
+            sb.append(c);
+            backtrack(digits, index + 1, sb, result);
+            sb.deleteCharAt(sb.length() - 1); 
+        }
+    }
+}
+
+
+11. Permutations
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+
+    public List<List<Integer>> permute(int[] nums) {
+        boolean[] used = new boolean[nums.length];
+        backtrack(nums, new ArrayList<>(), used);
+        return result;
+    }
+
+    private void backtrack(int[] nums, List<Integer> current, boolean[] used) {
+        if (current.size() == nums.length) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (!used[i]) {
+                used[i] = true;
+                current.add(nums[i]);
+
+                backtrack(nums, current, used);
+
+                current.remove(current.size() - 1);
+                used[i] = false;
+            }
+        }
+    }
+}
+
+
+12.  Combination sum
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(candidates, target, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(int[] candidates, int remaining, int start,
+                           List<Integer> current, List<List<Integer>> result) {
+
+        if (remaining == 0) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+
+        if (remaining < 0) {
+            return;
+        }
+
+        for (int i = start; i < candidates.length; i++) {
+            current.add(candidates[i]);
+            backtrack(candidates, remaining - candidates[i], i, current, result);
+            current.remove(current.size() - 1); 
+        }
+    }
+}
+
+
+13.  Sort colors
+public class Solution {
+    public void sortColors(int[] nums) {
+        int low = 0, mid = 0, high = nums.length - 1;
+
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                swap(nums, low, mid);
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                swap(nums, mid, high);
+                high--;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        int[] nums1 = {2,0,2,1,1,0};
+        sol.sortColors(nums1);
+        System.out.println(Arrays.toString(nums1)); 
+
+        int[] nums2 = {2,0,1};
+        sol.sortColors(nums2);
+        System.out.println(Arrays.toString(nums2)); 
+    }
+}
+
+
+14.  House robber
+class Solution {
+    public int rob(int[] nums) {
+        int prev2 = 0;
+        int prev1 = 0;
+        
+        for (int num : nums){
+            int curr = Math.max(prev1, prev2 + num);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
+}
+
+
+
