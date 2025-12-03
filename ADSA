@@ -347,4 +347,166 @@ class Solution {
 }
 
 
+15.  Implementation of stack using queue
+import java.util.LinkedList;
+import java.util.Queue;
+
+class MyStack {
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
+
+    public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+
+    public void push(int x) {
+        q2.offer(x);
+
+        while (!q1.isEmpty()) {
+            q2.offer(q1.poll());
+        }
+
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+
+    public int pop() {
+        return q1.poll();
+    }
+
+    public int top() {
+        return q1.peek();
+    }
+
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        MyStack myStack = new MyStack();
+        myStack.push(1);
+        myStack.push(2);
+        System.out.println(myStack.top());   
+        System.out.println(myStack.pop());   
+        System.out.println(myStack.empty());
+    }
+}
+
+
+16.  Trapping rainwater
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int water = 0;
+        
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    water += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    water += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+        
+        return water;
+    }
+}
+
+
+17.  Remove duplicates from sorted list
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+
+    static ListNode deserialize(String data) {
+        data = data.trim();
+        if (data.equals("[]")) return null;
+
+        data = data.substring(1, data.length() - 1); 
+        String[] parts = data.split(",");
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        for (String part : parts) {
+            current.next = new ListNode(Integer.parseInt(part.trim()));
+            current = current.next;
+        }
+        return dummy.next;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        ListNode curr = this;
+        while (curr != null) {
+            sb.append(curr.val);
+            if (curr.next != null) sb.append(",");
+            curr = curr.next;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode current = head;
+
+        while (current != null && current.next != null) {
+            if (current.val == current.next.val) {
+                current.next = current.next.next; 
+            } else {
+                current = current.next; 
+            }
+        }
+        return head;
+    }
+}
+
+
+18.  Next greater element
+import java.util.*;
+
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> stack = new Stack<>();
+        Map<Integer, Integer> nextGreater = new HashMap<>();
+
+        for (int num : nums2) {
+            while (!stack.isEmpty() && num > stack.peek()) {
+                nextGreater.put(stack.pop(), num);
+            }
+            stack.push(num);
+        }
+
+        while (!stack.isEmpty()) {
+            nextGreater.put(stack.pop(), -1);
+        }
+
+        int[] result = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            result[i] = nextGreater.get(nums1[i]);
+        }
+        return result;
+    }
+}
+
+
 
